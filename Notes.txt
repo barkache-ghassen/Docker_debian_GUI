@@ -1,0 +1,24 @@
+web3challenger@dafe9e5f223d:~$ vncserver
+vncserver: Could not migrate /home/web3challenger/.vnc to /home/web3challenger/.config/tigervnc.
+this was an error and vnc was not able to connect to the server 
+this line in start.sh 
+# Fix TigerVNC migration
+mkdir -p $HOME/.config/tigervnc
+chown -R $USER:$USER $HOME/.config ///fixed the problem 
+
+The VNC password is hardcoded as "password" - consider using environment variables for security
+The container runs as root in the Dockerfile, but a web3challenger user is created for future use (see Notes.txt)
+The TigerVNC migration fix in start.sh (lines 3-5) prevents the common VNC startup error
+
+to run
+docker build --no-cache -t debian:web3challenger .
+docker run --rm -p 8080:8080 -p 5901:5901 debian:web3challenger
+
+user created in base image to run the container as this user uncomment the command below in the dockerfile
+USER web3challenger
+WORKDIR /home/web3challenger
+
+docker exec -it <container_id> /bin/bash
+
+REST TO DO : 
+fixing remote resize to run while building 
