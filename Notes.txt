@@ -8,7 +8,7 @@ chown -R $USER:$USER $HOME/.config ///fixed the problem
 
 The VNC password is hardcoded as "password" - consider using environment variables for security
 The container runs as root in the Dockerfile, but a web3challenger user is created for future use (see Notes.txt)
-The TigerVNC migration fix in start.sh (lines 3-5) prevents the common VNC startup error
+The TigerVNC migration fix in start.sh (lines 8-9) prevents the common VNC startup error
 
 to run
 docker build --no-cache -t debian:web3challenger .
