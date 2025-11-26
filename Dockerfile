@@ -7,10 +7,8 @@ RUN apt-get update && apt-get install -y \
     tigervnc-standalone-server tigervnc-common tigervnc-tools \
     novnc websockify \
     x11-xserver-utils dbus-x11 xfonts-base \
-    curl wget git nano sudo \
-    fonts-dejavu fonts-liberation \
-    adwaita-icon-theme \
-    hicolor-icon-theme \
+    curl wget git nano sudo gosu \
+    fonts-dejavu fonts-liberation \ 
     --no-install-recommends && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
@@ -32,13 +30,12 @@ RUN mkdir -p /home/web3challenger/.config/xfce4/xfconf/xfce-perchannel-xml
 COPY xsettings.xml /home/web3challenger/.config/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml
 RUN chown -R web3challenger:web3challenger /home/web3challenger/.config
 
-# Set XFCE4 icon theme to Adwaita
-COPY xfce4-desktop.xml /home/web3challenger/.config/xfce4/xfconf/xfce-perchannel-xml/xfce-desktop.xml
-RUN chown -R web3challenger:web3challenger /home/web3challenger/.config
-
 
 COPY start.sh /root/start.sh
 RUN chmod +x /root/start.sh
+COPY change_user.sh /root/change_user.sh
+RUN chmod +x /root/change_user.sh
+
 
 COPY web3_bg.png /home/web3challenger/
 RUN chown -R web3challenger:web3challenger /home/web3challenger/web3_bg.png
@@ -46,6 +43,5 @@ RUN chown -R web3challenger:web3challenger /home/web3challenger/web3_bg.png
 # Expose VNC + noVNC ports
 EXPOSE 5901 8080
 
-ENTRYPOINT ["/root/start.sh"]
-
+CMD ["/root/start.sh"]
 

@@ -34,14 +34,12 @@ vncserver -kill :1 >/dev/null 2>&1 || true
 # Start VNC
 export DISPLAY=:1
 export QT_AUTO_SCREEN_SCALE_FACTOR=1
-vncserver :1 -geometry 1280x800 -depth 24 -SecurityTypes None -dpi 96
 
-# Apply dynamic auto-resize on VNC-0
-
-
-# Start noVNC (web browser)
-websockify --web=/usr/share/novnc/ 0.0.0.0:8080 127.0.0.1:5901 
-
-# wait for the services 
+exec gosu web3challenger bash <<'EOS'
+# Commands here run as web3challenger
+cd $HOME || exit 1
+vncserver :1 -geometry 1280x800 -depth 24 -SecurityTypes None
+websockify --web=/usr/share/novnc/ 0.0.0.0:8080 127.0.0.1:5901
 wait
+EOS
 
